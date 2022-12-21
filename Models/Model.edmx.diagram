@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="88d85b9572174b20b73ce0669acf8379" Name="Diagram1" ZoomLevel="55">
+        <EntityTypeShape EntityType="P_ZhulinaProjectModel.Hobby" Width="1.5" PointX="0.75" PointY="5" />
+        <EntityTypeShape EntityType="P_ZhulinaProjectModel.Jobs" Width="1.5" PointX="3" PointY="5.25" />
+        <EntityTypeShape EntityType="P_ZhulinaProjectModel.Progress" Width="1.5" PointX="5.25" PointY="1.25" />
+        <EntityTypeShape EntityType="P_ZhulinaProjectModel.Selected" Width="1.5" PointX="3" PointY="1" />
+        <EntityTypeShape EntityType="P_ZhulinaProjectModel.sysdiagrams" Width="1.5" PointX="5.75" PointY="4.75" />
+        <EntityTypeShape EntityType="P_ZhulinaProjectModel.Users" Width="1.5" PointX="0.75" PointY="1" />
+        <AssociationConnector Association="P_ZhulinaProjectModel.FK_Selected_Hobby" />
+        <AssociationConnector Association="P_ZhulinaProjectModel.FK_Progress_jobs" />
+        <AssociationConnector Association="P_ZhulinaProjectModel.FK_Progress_Selected" />
+        <AssociationConnector Association="P_ZhulinaProjectModel.FK_Selected_Users" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

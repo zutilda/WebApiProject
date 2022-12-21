@@ -1,0 +1,379 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище P_ZhulinaProjectModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Hobby">
+          <Key>
+            <PropertyRef Name="hobby_id" />
+          </Key>
+          <Property Name="hobby_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="hobby" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="short_description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="photo" Type="nvarchar(max)" />
+          <Property Name="information_link" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="age_limit" Type="int" Nullable="false" />
+          <Property Name="minimum_investment" Type="float" />
+        </EntityType>
+        <EntityType Name="Jobs">
+          <Key>
+            <PropertyRef Name="id_job" />
+          </Key>
+          <Property Name="id_job" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="job_photo" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="job_description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="job_evaluation" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Progress">
+          <Key>
+            <PropertyRef Name="id_progress" />
+          </Key>
+          <Property Name="id_progress" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_job" Type="int" Nullable="false" />
+          <Property Name="id_selected" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Selected">
+          <Key>
+            <PropertyRef Name="id_selected" />
+          </Key>
+          <Property Name="id_selected" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_users" Type="int" Nullable="false" />
+          <Property Name="id_hobby" Type="int" Nullable="false" />
+          <Property Name="personal_assessment" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="id_user" />
+          </Key>
+          <Property Name="id_user" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="login" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="surname" Type="nvarchar" MaxLength="50" />
+          <Property Name="patronymic" Type="nvarchar" MaxLength="50" />
+          <Property Name="age" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Progress_jobs">
+          <End Role="Jobs" Type="Self.Jobs" Multiplicity="1" />
+          <End Role="Progress" Type="Self.Progress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Jobs">
+              <PropertyRef Name="id_job" />
+            </Principal>
+            <Dependent Role="Progress">
+              <PropertyRef Name="id_job" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Progress_Selected">
+          <End Role="Selected" Type="Self.Selected" Multiplicity="1" />
+          <End Role="Progress" Type="Self.Progress" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Selected">
+              <PropertyRef Name="id_selected" />
+            </Principal>
+            <Dependent Role="Progress">
+              <PropertyRef Name="id_progress" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Selected_Hobby">
+          <End Role="Hobby" Type="Self.Hobby" Multiplicity="1" />
+          <End Role="Selected" Type="Self.Selected" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hobby">
+              <PropertyRef Name="hobby_id" />
+            </Principal>
+            <Dependent Role="Selected">
+              <PropertyRef Name="id_hobby" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Selected_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Selected" Type="Self.Selected" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="id_user" />
+            </Principal>
+            <Dependent Role="Selected">
+              <PropertyRef Name="id_users" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище P_ZhulinaProjectModelContainer">
+          <EntitySet Name="Hobby" EntityType="Self.Hobby" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Jobs" EntityType="Self.Jobs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Progress" EntityType="Self.Progress" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Selected" EntityType="Self.Selected" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Progress_jobs" Association="Self.FK_Progress_jobs">
+            <End Role="Jobs" EntitySet="Jobs" />
+            <End Role="Progress" EntitySet="Progress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Progress_Selected" Association="Self.FK_Progress_Selected">
+            <End Role="Selected" EntitySet="Selected" />
+            <End Role="Progress" EntitySet="Progress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Selected_Hobby" Association="Self.FK_Selected_Hobby">
+            <End Role="Hobby" EntitySet="Hobby" />
+            <End Role="Selected" EntitySet="Selected" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Selected_Users" Association="Self.FK_Selected_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Selected" EntitySet="Selected" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="P_ZhulinaProjectModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Hobby" EntityType="P_ZhulinaProjectModel.Hobby" />
+          <EntitySet Name="Jobs" EntityType="P_ZhulinaProjectModel.Jobs" />
+          <EntitySet Name="Progress" EntityType="P_ZhulinaProjectModel.Progress" />
+          <EntitySet Name="Selected" EntityType="P_ZhulinaProjectModel.Selected" />
+          <EntitySet Name="sysdiagrams" EntityType="P_ZhulinaProjectModel.sysdiagrams" />
+          <EntitySet Name="Users" EntityType="P_ZhulinaProjectModel.Users" />
+          <AssociationSet Name="FK_Selected_Hobby" Association="P_ZhulinaProjectModel.FK_Selected_Hobby">
+            <End Role="Hobby" EntitySet="Hobby" />
+            <End Role="Selected" EntitySet="Selected" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Progress_jobs" Association="P_ZhulinaProjectModel.FK_Progress_jobs">
+            <End Role="Jobs" EntitySet="Jobs" />
+            <End Role="Progress" EntitySet="Progress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Progress_Selected" Association="P_ZhulinaProjectModel.FK_Progress_Selected">
+            <End Role="Selected" EntitySet="Selected" />
+            <End Role="Progress" EntitySet="Progress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Selected_Users" Association="P_ZhulinaProjectModel.FK_Selected_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Selected" EntitySet="Selected" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Hobby">
+          <Key>
+            <PropertyRef Name="hobby_id" />
+          </Key>
+          <Property Name="hobby_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="hobby1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="short_description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="photo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="information_link" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="age_limit" Type="Int32" Nullable="false" />
+          <Property Name="minimum_investment" Type="Double" />
+          <NavigationProperty Name="Selected" Relationship="P_ZhulinaProjectModel.FK_Selected_Hobby" FromRole="Hobby" ToRole="Selected" />
+        </EntityType>
+        <EntityType Name="Jobs">
+          <Key>
+            <PropertyRef Name="id_job" />
+          </Key>
+          <Property Name="id_job" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="job_photo" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="job_description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="job_evaluation" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Progress" Relationship="P_ZhulinaProjectModel.FK_Progress_jobs" FromRole="Jobs" ToRole="Progress" />
+        </EntityType>
+        <EntityType Name="Progress">
+          <Key>
+            <PropertyRef Name="id_progress" />
+          </Key>
+          <Property Name="id_progress" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_job" Type="Int32" Nullable="false" />
+          <Property Name="id_selected" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Jobs" Relationship="P_ZhulinaProjectModel.FK_Progress_jobs" FromRole="Progress" ToRole="Jobs" />
+          <NavigationProperty Name="Selected" Relationship="P_ZhulinaProjectModel.FK_Progress_Selected" FromRole="Progress" ToRole="Selected" />
+        </EntityType>
+        <EntityType Name="Selected">
+          <Key>
+            <PropertyRef Name="id_selected" />
+          </Key>
+          <Property Name="id_selected" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_users" Type="Int32" Nullable="false" />
+          <Property Name="id_hobby" Type="Int32" Nullable="false" />
+          <Property Name="personal_assessment" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Hobby" Relationship="P_ZhulinaProjectModel.FK_Selected_Hobby" FromRole="Selected" ToRole="Hobby" />
+          <NavigationProperty Name="Progress" Relationship="P_ZhulinaProjectModel.FK_Progress_Selected" FromRole="Selected" ToRole="Progress" />
+          <NavigationProperty Name="Users" Relationship="P_ZhulinaProjectModel.FK_Selected_Users" FromRole="Selected" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="id_user" />
+          </Key>
+          <Property Name="id_user" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="login" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="surname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="patronymic" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="age" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Selected" Relationship="P_ZhulinaProjectModel.FK_Selected_Users" FromRole="Users" ToRole="Selected" />
+        </EntityType>
+        <Association Name="FK_Selected_Hobby">
+          <End Type="P_ZhulinaProjectModel.Hobby" Role="Hobby" Multiplicity="1" />
+          <End Type="P_ZhulinaProjectModel.Selected" Role="Selected" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hobby">
+              <PropertyRef Name="hobby_id" />
+            </Principal>
+            <Dependent Role="Selected">
+              <PropertyRef Name="id_hobby" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Progress_jobs">
+          <End Type="P_ZhulinaProjectModel.Jobs" Role="Jobs" Multiplicity="1" />
+          <End Type="P_ZhulinaProjectModel.Progress" Role="Progress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Jobs">
+              <PropertyRef Name="id_job" />
+            </Principal>
+            <Dependent Role="Progress">
+              <PropertyRef Name="id_job" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Progress_Selected">
+          <End Type="P_ZhulinaProjectModel.Selected" Role="Selected" Multiplicity="1" />
+          <End Type="P_ZhulinaProjectModel.Progress" Role="Progress" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Selected">
+              <PropertyRef Name="id_selected" />
+            </Principal>
+            <Dependent Role="Progress">
+              <PropertyRef Name="id_progress" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Selected_Users">
+          <End Type="P_ZhulinaProjectModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="P_ZhulinaProjectModel.Selected" Role="Selected" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="id_user" />
+            </Principal>
+            <Dependent Role="Selected">
+              <PropertyRef Name="id_users" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище P_ZhulinaProjectModelContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Hobby">
+            <EntityTypeMapping TypeName="P_ZhulinaProjectModel.Hobby">
+              <MappingFragment StoreEntitySet="Hobby">
+                <ScalarProperty Name="minimum_investment" ColumnName="minimum_investment" />
+                <ScalarProperty Name="age_limit" ColumnName="age_limit" />
+                <ScalarProperty Name="information_link" ColumnName="information_link" />
+                <ScalarProperty Name="photo" ColumnName="photo" />
+                <ScalarProperty Name="short_description" ColumnName="short_description" />
+                <ScalarProperty Name="hobby1" ColumnName="hobby" />
+                <ScalarProperty Name="hobby_id" ColumnName="hobby_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Jobs">
+            <EntityTypeMapping TypeName="P_ZhulinaProjectModel.Jobs">
+              <MappingFragment StoreEntitySet="Jobs">
+                <ScalarProperty Name="job_evaluation" ColumnName="job_evaluation" />
+                <ScalarProperty Name="job_description" ColumnName="job_description" />
+                <ScalarProperty Name="job_photo" ColumnName="job_photo" />
+                <ScalarProperty Name="id_job" ColumnName="id_job" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Progress">
+            <EntityTypeMapping TypeName="P_ZhulinaProjectModel.Progress">
+              <MappingFragment StoreEntitySet="Progress">
+                <ScalarProperty Name="id_selected" ColumnName="id_selected" />
+                <ScalarProperty Name="id_job" ColumnName="id_job" />
+                <ScalarProperty Name="id_progress" ColumnName="id_progress" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Selected">
+            <EntityTypeMapping TypeName="P_ZhulinaProjectModel.Selected">
+              <MappingFragment StoreEntitySet="Selected">
+                <ScalarProperty Name="personal_assessment" ColumnName="personal_assessment" />
+                <ScalarProperty Name="id_hobby" ColumnName="id_hobby" />
+                <ScalarProperty Name="id_users" ColumnName="id_users" />
+                <ScalarProperty Name="id_selected" ColumnName="id_selected" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="P_ZhulinaProjectModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="P_ZhulinaProjectModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="age" ColumnName="age" />
+                <ScalarProperty Name="patronymic" ColumnName="patronymic" />
+                <ScalarProperty Name="surname" ColumnName="surname" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="login" ColumnName="login" />
+                <ScalarProperty Name="id_user" ColumnName="id_user" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
